@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Event management dashboard" />
+    <title>Gatherly | Event Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span>gatherly</span>
+        </div>
+
+        <nav class="sidebar-nav" aria-label="Main navigation">
+          <p class="nav-label">Workspace</p>
+          <button class="nav-item active" type="button">
+            <span class="nav-icon">▦</span>
+            Overview
+          </button>
+          <button class="nav-item" type="button">
+            <span class="nav-icon">◫</span>
+            Events
+            <span class="nav-count" id="navEventCount">0</span>
+          </button>
+          <button class="nav-item" type="button">
+            <span class="nav-icon">♧</span>
+            Guests
+          </button>
+          <button class="nav-item" type="button">
+            <span class="nav-icon">◌</span>
+            Inbox
+            <span class="nav-dot"></span>
+          </button>
+
+          <p class="nav-label nav-label-spaced">Manage</p>
+          <button class="nav-item" type="button">
+            <span class="nav-icon">□</span>
+            Calendar
+          </button>
+          <button class="nav-item" type="button">
+            <span class="nav-icon">↗</span>
+            Reports
+          </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <button class="nav-item" type="button">
+            <span class="nav-icon">⚙</span>
+            Settings
+          </button>
+
+          <div class="help-card">
+            <span class="help-icon">?</span>
+            <div>
+              <strong>Need a hand?</strong>
+              <small>Visit the help center</small>
+            </div>
+            <span class="arrow">→</span>
+          </div>
+
+          <div class="profile-card">
+            <div class="avatar avatar-user">AR</div>
+            <div>
+              <strong>Alex Rivera</strong>
+              <small>Admin workspace</small>
+            </div>
+            <span class="more">•••</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="mobile-menu" id="mobileMenu" type="button" aria-label="Toggle navigation">☰</button>
+            <div class="breadcrumbs">
+              <span>Workspace</span>
+              <b>/</b>
+              <strong>Overview</strong>
+            </div>
+          </div>
+
+          <div class="top-actions">
+            <button class="icon-btn" type="button" aria-label="Search">⌕</button>
+            <button class="icon-btn notification" type="button" aria-label="Notifications">♧<i></i></button>
+            <button class="primary-btn" id="openModalBtn" type="button">＋ New event</button>
+          </div>
+        </header>
+
+        <section class="hero-row">
+          <div>
+            <p class="eyebrow">Wednesday, October 16, 2024</p>
+            <h1>Good morning, Alex <span>✦</span></h1>
+            <p class="subheading">Here’s what’s happening across your event program today.</p>
+          </div>
+
+          <div class="date-picker" aria-label="Current month">
+            <span class="calendar-symbol">□</span>
+            <span>October 2024</span>
+            <span class="chevron">⌄</span>
+          </div>
+        </section>
+
+        <section class="stats-grid" aria-label="Event summary metrics">
+          <article class="stat-card stat-orange">
+            <div class="stat-icon">◫</div>
+            <div>
+              <span>Upcoming events</span>
+              <strong id="statUpcoming">0</strong>
+              <small><b id="statDeltaUpcoming">0</b> this month</small>
+            </div>
+            <span class="metric-art">◒</span>
+          </article>
+
+          <article class="stat-card stat-green">
+            <div class="stat-icon">♧</div>
+            <div>
+              <span>Total guests</span>
+              <strong id="statGuests">0</strong>
+              <small><b id="statDeltaGuests">0%</b> from last month</small>
+            </div>
+            <span class="metric-art">✺</span>
+          </article>
+
+          <article class="stat-card stat-blue">
+            <div class="stat-icon">↗</div>
+            <div>
+              <span>Avg. attendance</span>
+              <strong id="statAttendance">0%</strong>
+              <small><b id="statDeltaAttendance">0%</b> from last month</small>
+            </div>
+            <span class="metric-art">⌁</span>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <article class="panel event-panel">
+            <div class="panel-header">
+              <div>
+                <p class="panel-kicker">Operations</p>
+                <h2>Upcoming events</h2>
+              </div>
+
+              <div class="toolbar">
+                <label class="search-box" aria-label="Search events">
+                  <span>⌕</span>
+                  <input id="searchInput" type="text" placeholder="Search events" />
+                </label>
+
+                <select id="statusFilter" aria-label="Filter by status">
+                  <option value="all">All statuses</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="planning">Planning</option>
+                  <option value="draft">Draft</option>
+                </select>
+
+                <button class="primary-btn small-btn" id="quickAddBtn" type="button">+ Add</button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Event</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Guests</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="eventsTableBody"></tbody>
+              </table>
+            </div>
+          </article>
+
+          <aside class="panel side-panel">
+            <div class="panel-header compact-header">
+              <div>
+                <p class="panel-kicker">Agenda</p>
+                <h2>Today</h2>
+              </div>
+              <button class="text-button" type="button">View all</button>
+            </div>
+
+            <div id="agendaList" class="agenda-list"></div>
+
+            <div class="mini-summary">
+              <div>
+                <span>Vendor follow-ups</span>
+                <strong id="vendorCount">0</strong>
+              </div>
+              <div>
+                <span>Open tasks</span>
+                <strong id="taskCount">0</strong>
+              </div>
+            </div>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-backdrop hidden" id="eventModal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="eventModalTitle">
+        <form id="eventForm">
+          <input type="hidden" id="eventId" />
+
+          <div class="modal-header">
+            <div>
+              <p class="panel-kicker">Event setup</p>
+              <h3 id="eventModalTitle">Create an event</h3>
+            </div>
+            <button class="icon-btn close-btn" id="closeModalBtn" type="button" aria-label="Close dialog">×</button>
+          </div>
+
+          <div class="field-grid">
+            <label>
+              <span>Event name</span>
+              <input id="eventName" name="eventName" type="text" placeholder="Summer Launch" required />
+            </label>
+
+            <label>
+              <span>Category</span>
+              <select id="eventCategory" name="eventCategory">
+                <option value="Conference">Conference</option>
+                <option value="Workshop">Workshop</option>
+                <option value="Party">Party</option>
+                <option value="Networking">Networking</option>
+                <option value="Exhibition">Exhibition</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Date</span>
+              <input id="eventDate" name="eventDate" type="date" required />
+            </label>
+
+            <label>
+              <span>Time</span>
+              <input id="eventTime" name="eventTime" type="time" required />
+            </label>
+
+            <label class="full-span">
+              <span>Location</span>
+              <input id="eventLocation" name="eventLocation" type="text" placeholder="Skyline Hall, London" required />
+            </label>
+
+            <label>
+              <span>Guests</span>
+              <input id="eventGuests" name="eventGuests" type="number" min="0" value="25" required />
+            </label>
+
+            <label>
+              <span>Status</span>
+              <select id="eventStatus" name="eventStatus">
+                <option value="confirmed">Confirmed</option>
+                <option value="planning">Planning</option>
+                <option value="draft">Draft</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="modal-actions">
+            <button class="secondary-btn" id="cancelModalBtn" type="button">Cancel</button>
+            <button class="primary-btn" type="submit">Save event</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
